@@ -11,6 +11,9 @@ import {AuthProvider} from '../../providers/auth/auth';
 import {HomePage} from '../home/home';
 import {EmailValidator} from '../../validators/email';
 
+import {Facebook} from '@ionic-native/facebook';
+import firebase from 'firebase';
+
 /**
  * Generated class for the LoginPage page.
  *
@@ -27,12 +30,16 @@ export class LoginPage {
   loginForm: FormGroup;
   loading: Loading;
 
+  //decide whether to keep this or not
+  userProfile: any = null;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public authData: AuthProvider,
               public formBuilder: FormBuilder,
               public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController,
+              private facebook: Facebook) {
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
@@ -46,6 +53,29 @@ export class LoginPage {
 
   createAccount() {
     this.navCtrl.push('SignupPage');
+  }
+
+
+  loginFacebook() {
+    this.facebook.login(['email']).then( (response) => {
+
+      const facebookCredential = firebase.auth.FacebookAuthProvider
+        .credential(response.authResponse.accessToken);
+
+      firebase.auth().signInWithCredential(facebookCredential)
+        .then( (success) => {
+          console.log("Firebase succes: " + JSON.stringify(success));
+          this.userProfile = success;
+        })
+        .catch( (error) => {
+          console.log("Firebase failure: " + JSON.stringify(error));
+        });
+
+    }).catch( (error) => {
+      console.log("Facebook login error (Not firebase yet)");
+      console.log(error);
+    });
+
   }
 
   loginUser() {

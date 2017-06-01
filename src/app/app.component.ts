@@ -17,16 +17,19 @@ export class MyApp {
               splashScreen: SplashScreen,
               afAuth: AngularFireAuth) {
 
+
+
     const authObserver = afAuth.authState.subscribe(user => {
       console.log("User is: ");
       console.log(user);
-      if (user) {
+      this.rootPage = 'LoginPage';
+      /*if (user) {
         this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = 'LoginPage';
         authObserver.unsubscribe();
-      }
+      }*/
     });
 
     platform.ready().then(() => {

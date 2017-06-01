@@ -14,6 +14,26 @@
 
 
 <ion-content padding>
+
+  <!-- Facebook Login START-->
+  <button ion-button center (click)="loginFacebook()">
+    Log In with Facebook
+  </button>
+  <ion-card *ngIf="userProfile">
+    <img [src]="userProfile.photoURL"/>
+    <ion-card-content>
+      <ion-card-title>
+        {{ userProfile.displayName }}
+      </ion-card-title>
+      <p>
+        The UID for this new user is {{userProfile.uid}} and the email is {{userProfile.email}}
+      </p>
+    </ion-card-content>
+  </ion-card>
+  <!-- Facebook Login END-->
+
+
+
   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
 
     <!-- TODO: You could include Form validation here -->

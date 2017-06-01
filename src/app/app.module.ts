@@ -11,6 +11,8 @@ import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
+import { Facebook } from '@ionic-native/facebook';
+
 const firebaseConfig={
   apiKey: "AIzaSyChC62HAtPWAtFiJmcDlTGWwq_YFOjSNqE",
   authDomain: "protobike-1495735501799.firebaseapp.com",
@@ -40,7 +42,8 @@ const firebaseConfig={
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,
+    Facebook
   ]
 })
 export class AppModule {}
