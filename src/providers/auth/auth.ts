@@ -34,5 +34,14 @@ export class AuthProvider {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword);
   }
 
+  signOut(){
+    firebase.auth().signOut().then( () => {
+      console.log("Signed Out!");
+      return true
+    }, (error) => {
+      console.log("Sign out error: ", error);
+    })
+  }
+
 
 }

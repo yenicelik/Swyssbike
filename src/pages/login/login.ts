@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, NgZone} from '@angular/core'; //Import NgZone because we have a bug
 import {
   IonicPage, NavController, NavParams,
   LoadingController, Loading, AlertController
@@ -12,6 +12,7 @@ import {HomePage} from '../home/home';
 import {EmailValidator} from '../../validators/email';
 
 import {Facebook} from '@ionic-native/facebook';
+import {GooglePlus} from '@ionic-native/google-plus';
 import firebase from 'firebase';
 
 /**
@@ -32,6 +33,8 @@ export class LoginPage {
 
   //decide whether to keep this or not
   userProfile: any = null;
+  zone: NgZone;
+
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -39,13 +42,28 @@ export class LoginPage {
               public formBuilder: FormBuilder,
               public alertCtrl: AlertController,
               public loadingCtrl: LoadingController,
-              private facebook: Facebook) {
+              private facebook: Facebook,
+              private googlePlus: GooglePlus) {
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
     });
+
+    this.zone = new NgZone({});
+    firebase.auth().onAuthStateChanged( (user) => {
+      this.zone.run( () => {
+        if (user) {
+          this.userProfile = user;
+        } else {
+          this.userProfile = null;
+        }
+      })
+    });
+
   }
+
+
 
   goToResetPassword() {
     this.navCtrl.push('ResetPasswordPage');
@@ -53,6 +71,22 @@ export class LoginPage {
 
   createAccount() {
     this.navCtrl.push('SignupPage');
+  }
+
+  loginGooglePlus() {
+    this.googlePlus.login({
+      'webClientId': '777348050122-794mipbttmorfli21pb63muss9vlklql.apps.googleusercontent.com',
+      'offline': true
+    }).then( (res) => {
+        firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+          .then( (success) => {
+            console.log("Firebase success: " + JSON.stringify(success));
+          })
+          .catch( (error) => {
+            console.log("Firebase failure: " + JSON.stringify(error))
+          })
+      }).catch((err) => console.error("loginGooglePlus (no firebase) Error: ", err));
+
   }
 
 
@@ -88,8 +122,6 @@ export class LoginPage {
         .then((authData) => {
           this.navCtrl.setRoot('HomePage');
         }, error => {
-          this.loading.dismiss().then(() => {
-
             let alert = this.alertCtrl.create({
               message: error.message,
               buttons: [{
@@ -98,16 +130,13 @@ export class LoginPage {
               }]
             });
             alert.present();
-
           });
-        });
-
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
 
     }
+  }
+
+  signOutOfThis() {
+    return this.authData.signOut()
   }
 
   ionViewDidLoad() {
