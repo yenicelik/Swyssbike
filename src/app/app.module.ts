@@ -5,7 +5,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
 import {MyApp} from './app.component';
-import {HomePage} from '../pages/home/home';
+import {CreditCardPage} from '../pages/credit-card/credit-card';
 
 import {Stripe} from '@ionic-native/stripe';
 
@@ -13,7 +13,7 @@ import {Stripe} from '@ionic-native/stripe';
 @NgModule({
     declarations: [
         MyApp,
-        HomePage
+        CreditCardPage
     ],
     imports: [
         BrowserModule,
@@ -22,7 +22,7 @@ import {Stripe} from '@ionic-native/stripe';
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
-        HomePage
+        CreditCardPage
     ],
     providers: [
         StatusBar,
