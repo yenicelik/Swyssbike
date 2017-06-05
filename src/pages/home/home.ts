@@ -28,7 +28,7 @@ export class HomePage {
     userLocation: any;
     begin: boolean;
     userPositionMarker: any;
-    allBikeMarkers: any = [];
+    allBikeMarkers: any = {};
     didBook: boolean = false;
 
 
@@ -100,8 +100,7 @@ export class HomePage {
         try {
             this.centerMapToUser();
             setInterval(() => {
-                this.removeBikeMarkers();
-                this.addBikeMarkers();
+                this.updateBikeMarkers();
             }, 1000 * 1);
             if (this.userCtrl.userLocation) {
                 this.map.setCenter(this.userCtrl.userLocation);
@@ -175,51 +174,42 @@ export class HomePage {
         bikeModal.present()
     }
 
-
-    addBikeMarkers() {
-        this.bikeDB.getBikesList().subscribe((allBikes) => {
-            allBikes.forEach(
-                (sglBike) => {
-                    console.log("Single bike");
-                    console.log(sglBike['current_user']);
-                    console.log(sglBike['bike_no']);
-                    if (sglBike['current_user'] === 0) {
-                        var bikePositionMarker = new google.maps.Marker({
-                            position: {lat: sglBike['positionLat'], lng: sglBike['positionLng']},
-                            map: this.map,
-                            title: "Bike" + String(sglBike['bike_no'])
-                        });
-
-                        bikePositionMarker.addListener('click', () => {
-                            //TODO: In-between refreshing markers, this action depends on the conditional
-                            if (this.userCtrl.hasABike) {
-                                this.alertTryingToBookTwice();
-                            } else if (this.userCtrl.userLocation) {
-                                this.modalGoToBookingPage(sglBike['bike_no']);
-                            }
-                        });
-
-                        this.allBikeMarkers.push(bikePositionMarker);
-
-                    } else if (sglBike['current_user'] != 0) {
-                        console.log("Bike number " + String(sglBike['bike_no']) + " is in use by user is: " + String(sglBike['current_user']));
-                    }
+    updateBikeMarkers() {
+        this.bikeDB.getBikesList().subscribe(allBikes => {
+            allBikes.map( sglBike => {
+                //Remove bike marker from the map
+                if (this.allBikeMarkers[String(sglBike['bike_no'])]) {
+                    this.allBikeMarkers[String(sglBike['bike_no'])].setMap(null);
+                    this.allBikeMarkers[String(sglBike['bike_no'])] = null; //TODO not sure which of these two, or both is necessary
                 }
-            );
-        });
 
-    }
+                //Add bike marker to map
+                if (sglBike['current_user'] === 0) { //TODO: Check for a better way to check if a bike is used or not
+                    let bikePositionMarker = new google.maps.Marker({
+                        position: {lat: sglBike['positionLat'], lng: sglBike['positionLng']},
+                        map: this.map,
+                        title: "Bike" + String(sglBike['bike_no'])
+                    });
 
-    removeBikeMarkers() {/*
-        if (this.allBikeMarkers) {
-            this.allBikeMarkers.map((sglBikeData) => {
-                sglBikeData.setMap(null);
-                sglBikeData = null;
+                    //TODO: In-between refreshing markers, this action depends on the conditional
+                    bikePositionMarker.addListener('click', () => {
+                        if (this.userCtrl.hasABike) {
+                            this.alertTryingToBookTwice();
+                        } else if (this.userCtrl.userLocation) {
+                            this.modalGoToBookingPage(sglBike['bike_no']);
+                        }
+                    });
+
+                    this.allBikeMarkers[String(sglBike['bike_no'])] = bikePositionMarker;
+                } else if (sglBike['current_user'] != 0) {
+
+
+                    console.log("Bike number " + String(sglBike['bike_no']) + " is in use by user is: " + String(sglBike['current_user']));
+                }
             });
-            this.allBikeMarkers = [];
-        }*/
+        });
     }
-
+    
 
     stopBookingBike() {
         this.events.publish("book:stopBooking", this.userCtrl.currentBike, this.userCtrl.userLocation.lat, this.userCtrl.userLocation.lng);
