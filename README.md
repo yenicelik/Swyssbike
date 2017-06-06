@@ -1,26 +1,19 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+## File structure
+|- 1. Pages
+  |-- 1. Home (The map)
+  |-- 2. RentBike
+  |-- 3. Login
+  |-- 4. ResetPassword
+  |-- 5. Signup
+|- 2. Providers
+  |-- 1. BikeDB
+  |-- 2. PermissionController
+  |-- 3. UserController
+  |-- 4. Auth
+|- 3. Validators
+  |-- 1. email
 
-## How to use this template
-
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/ionic-team/ionic2-app-base).
-
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/ionic-team/ionic2-app-base).
-
-### With the Ionic CLI:
-
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
-
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myBlank blank
-```
-
-Then, to run it, cd into `myBlank` and run:
-
-```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
-```
-
-Substitute ios for android if not on a Mac.
-
+## Conventions:
+Whenever you implement an error-log, please **include the id of the error log at the beginning of the message** like this:
+`ERROR AT 23453: ...`
+The first two digits describe the location where the error happened and refer to the Folder, and Subfolder respectively (in the example of 23453, it refers to Providers -> UserController). Within the subfolder itself, three random digits should be added (in the example of 23453, 453 is the random digit), such that we can just apply a 'cmd+f' and quickly find the function that causes the error.
