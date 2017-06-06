@@ -99,15 +99,13 @@ export class HomePage {
         //Update markers repeatedly
         try {
             this.centerMapToUser();
-            setInterval(() => {
-                this.updateBikeMarkers();
-            }, 1000 * 1);
+            this.updateBikeMarkers();
             if (this.userCtrl.userLocation) {
                 this.map.setCenter(this.userCtrl.userLocation);
             }
 
         } catch (e) {
-            console.log("ERROR WHEN STARTING AND STOPPING BOOKINGBIKE!");
+            console.log("ERROR WHEN UPDATINGBIKEMARKERS OR SETTING CENTERMAPTOUSER!");
             console.log(e);
         }
 
@@ -209,7 +207,7 @@ export class HomePage {
             });
         });
     }
-    
+
 
     stopBookingBike() {
         this.events.publish("book:stopBooking", this.userCtrl.currentBike, this.userCtrl.userLocation.lat, this.userCtrl.userLocation.lng);
