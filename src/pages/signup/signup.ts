@@ -5,8 +5,9 @@ import {
 } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthProvider} from '../../providers/auth/auth';
-import {HomePage} from '../home/home';
 import {EmailValidator} from '../../validators/email';
+
+import {LoginPage} from '../login/login';
 
 /**
  * Generated class for the SignupPage page.
@@ -44,12 +45,12 @@ export class SignupPage {
     } else {
       this.authData.signupUser(this.signupForm.value.email, this.signupForm.value.password)
         .then(() => {
-          this.navCtrl.setRoot(HomePage);
+          this.navCtrl.setRoot(LoginPage);
+          console.log("SignUp successful!");
         }, (error) => {
           this.loading.dismiss().then(() => {
-            var errorMessage: string = error.message;
             let alert = this.alertCtrl.create({
-              message: errorMessage,
+              message: "ERROR AT 15428: " + error.message,
               buttons: [{
                 text: "Ok",
                 role: "cancel"

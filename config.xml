@@ -3,16 +3,18 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://10.2.166.241:8100" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-navigation href="http://10.2.53.154:8100" />
+    <allow-navigation href="http://10.2.166.241:8100" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
@@ -47,6 +49,7 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <preference name="KeychainAccessibility" value="WhenUnlocked"/>
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
         <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
@@ -85,7 +88,7 @@
         <variable name="APP_ID" value="1346374062122069" />
         <variable name="APP_NAME" value="Protobike" />
     </plugin>
-    <plugin name="cordova-plugin-googleplus" spec="^5.1.1">
+    <plugin name="cordova-plugin-googleplus" spec="git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.777348050122-794mipbttmorfli21pb63muss9vlklql" />
     </plugin>
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />

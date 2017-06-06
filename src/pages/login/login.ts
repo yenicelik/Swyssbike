@@ -8,7 +8,6 @@ import {
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthProvider} from '../../providers/auth/auth';
 
-import {HomePage} from '../home/home';
 import {EmailValidator} from '../../validators/email';
 
 import {Facebook} from '@ionic-native/facebook';
@@ -64,7 +63,6 @@ export class LoginPage {
   }
 
 
-
   goToResetPassword() {
     this.navCtrl.push('ResetPasswordPage');
   }
@@ -83,9 +81,9 @@ export class LoginPage {
             console.log("Firebase success: " + JSON.stringify(success));
           })
           .catch( (error) => {
-            console.log("Firebase failure: " + JSON.stringify(error))
+            console.log("ERROR AT 13539: Firebase failure: " + JSON.stringify(error))
           })
-      }).catch((err) => console.error("loginGooglePlus (no firebase) Error: ", err));
+      }).catch((err) => console.error(" ERROR AT 13241: loginGooglePlus (no firebase) Error: ", JSON.stringify(err)));
 
   }
 
@@ -102,12 +100,12 @@ export class LoginPage {
           this.userProfile = success;
         })
         .catch( (error) => {
-          console.log("Firebase failure: " + JSON.stringify(error));
+          console.log("ERROR AT 13902: Firebase failure: " + JSON.stringify(error));
         });
 
     }).catch( (error) => {
-      console.log("Facebook login error (Not firebase yet)");
-      console.log(error);
+      console.log("ERROR AT 13239: Facebook login error (Not firebase yet)");
+      console.log(JSON.stringify(error));
     });
 
   }
@@ -123,7 +121,7 @@ export class LoginPage {
           this.navCtrl.setRoot('HomePage');
         }, error => {
             let alert = this.alertCtrl.create({
-              message: error.message,
+              message: "ERROR AT 13319:" + error.message,
               buttons: [{
                 text: "Ok",
                 role: "cancel"

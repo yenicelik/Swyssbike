@@ -48,9 +48,8 @@ export class ResetPasswordPage {
           });
           alert.present();
         }, (error) => {
-          var errorMessage: string = error.message;
           let errorAlert = this.alertCtrl.create({
-            message: errorMessage,
+            message: "ERROR AT 14982: " + error.message,
             buttons: [{
               text: "Ok",
               role: "cancel",
