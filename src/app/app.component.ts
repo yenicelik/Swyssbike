@@ -4,6 +4,8 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
 import {AngularFireAuth} from 'angularfire2/auth';
+import {AuthProvider} from '../providers/auth/auth';
+
 
 import {HomePage} from '../pages/home/home';
 import {LoginPage} from '../pages/login/login';
@@ -18,10 +20,13 @@ export class MyApp {
     constructor(platform: Platform,
                 statusBar: StatusBar,
                 splashScreen: SplashScreen,
-                afAuth: AngularFireAuth) {
+                afAuth: AngularFireAuth,
+                authData: AuthProvider) {
         platform.ready().then(() => {
 
-            const authObserver = afAuth.authState.subscribe(user => {
+
+
+            const authObserver = authData.afAuth.authState.subscribe(user => {
                 console.log("User is: ");
                 console.log(user);
                 if (user) {
