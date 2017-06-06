@@ -6,16 +6,23 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import {Geolocation} from '@ionic-native/geolocation';
 
+import {Facebook} from '@ionic-native/facebook';
+import {GooglePlus} from '@ionic-native/google-plus';
+
 
 import {AngularFireModule} from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { BikeDbProvider } from '../providers/bike-db/bike-db';
 import {RentBikePage} from '../pages/rent-bike/rent-bike';
+import {LoginPage} from '../pages/login/login';
+
+import { BikeDbProvider } from '../providers/bike-db/bike-db';
 import { PermissionControlProvider } from '../providers/permission-control/permission-control';
 import { UserControllerProvider } from '../providers/user-controller/user-controller';
+import { AuthProvider } from '../providers/auth/auth';
 
 
 
@@ -32,19 +39,22 @@ const firebaseConfig={
   declarations: [
     MyApp,
     HomePage,
-    RentBikePage
+    RentBikePage,
+      LoginPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+      AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    RentBikePage
+    RentBikePage,
+      LoginPage
   ],
   providers: [
     StatusBar,
@@ -54,6 +64,9 @@ const firebaseConfig={
     BikeDbProvider,
     PermissionControlProvider,
     UserControllerProvider,
+    AuthProvider,
+      Facebook,
+      GooglePlus
   ]
 })
 export class AppModule {}
